@@ -2,12 +2,12 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-// OLED 参数：0.91 寸常见规格为 128x32
+// OLED specs: 0.91 inch, commonly 128x32
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 32
 #define OLED_RESET -1
 
-// I2C 地址通常为 0x3C
+// The I2C address is usually 0x3C
 Adafruit_SSD1306 display(
   SCREEN_WIDTH,
   SCREEN_HEIGHT,
@@ -15,7 +15,7 @@ Adafruit_SSD1306 display(
   OLED_RESET
 );
 
-// GSR 传感器模拟输入
+// GSR Sensor Analog Input
 const int GSR_PIN = A0;
 
 int sensorValue = 0;
@@ -23,16 +23,16 @@ int sensorValue = 0;
 void setup() {
   Serial.begin(9600);
 
-  // 初始化 I2C：UNO SDA=A4，SCL=A5
+  // Initialize I2C：UNO SDA=A4，SCL=A5
   Wire.begin();
 
-  // 初始化 OLED
+  // Initialize OLED
   if (!display.begin(
         SSD1306_SWITCHCAPVCC,
         0x3C
       )) {
     while (true) {
-      // OLED 初始化失败
+      // OLED Initialization failed
     }
   }
 
@@ -45,18 +45,18 @@ void setup() {
 }
 
 void loop() {
-  // 读取 GSR 原始模拟值：0~1023
+  // Read the raw GSR analog value：0~1023
   sensorValue = analogRead(GSR_PIN);
 
-  // 串口输出纯数字
+  // Serial port outputs pure numbers
   Serial.println(sensorValue);
 
-  // OLED 仅显示数字
+  // OLED Show numbers only
   display.clearDisplay();
   display.setTextSize(2);
   display.setTextColor(SSD1306_WHITE);
 
-  // 根据数字位数居中显示
+  // Center display according to the number of digits
   int16_t x1, y1;
   uint16_t textWidth, textHeight;
 
@@ -76,6 +76,6 @@ void loop() {
   display.print(valueText);
   display.display();
 
-  // 每 500 毫秒更新一次
+  // Updates every 500 milliseconds
   delay(500);
 }
